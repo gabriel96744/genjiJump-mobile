@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <style>
+      body{
+        background-image:url("Temple_of_Anubis_003.jpg");
+        background-size:cover;
+        overflow:hidden;
+        margin:0;
+        padding:0;
+        z-index:-1;
+      }
+      #score{
+        float:right;
+        z-index:1;
+      }
+    </style>
+    <script src="p5.min.js"></script>
+    <script src="jumper.js"></script>
+    <script src="barrier.js"></script>
+   <script src="platform.js"></script>
+    <script src="p5.collide2d.min.js"></script>
+  </head>
+  <body>
+    <h1 id="score" placeholder="score:0"></h1>
+    <script>
+    var audio = new Audio('Fireball+3.mp3');
+    var bar = 0;
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var jumper = new jumper();
+    var barrier = new barrier();
+    var platform = new platform();
+    var hit = false;
+    var hitOne = false;
+    var hitTwo = false;
+    let img1;
+    let img;
+    let img2;
+    var points = 0;
+    function preload(){
+      img = loadImage('Genji_Profile_Picture.png');
+      img1 = loadImage('Ana_Spray_-_Grenade.png');
+      img2 = loadImage('health-300x300.png');
+      
+    }
+      function setup(){
+        createCanvas(w,h);
+      
+      }
+      function draw(){
+        background(255);
+        jumper.show();
+        jumper.update();
+        jumper.move();
+        barrier.show();
+        barrier.update();
+        platform.show();
+        hit = collideRectCircle(barrier.x,barrier.y,barrier.width-25,barrier.height-25,jumper.x,jumper.y,25);
+        if(hit === true){
+          noLoop();
+          location.href = "dead.html";
+          
+        }
+        hitOne = collideRectCircle(platform.x,platform.y,100,100,jumper.x,jumper.y,50);
+        if(hitOne === true){
+          jumper.up();
+        }
+        hitTwo = collideRectRect(health.x,health.y,health.width,health.height,jumper.x,jumper.y,jumper.width,jumper.height);
+        if(hitTwo === true){
+          points += 100;
+          bar == 0;
+          document.getElementById('score').innerHTML = "score: " + points;
+        }
+      }
+    </script>
+  </body>
+  
+  
+</html>
